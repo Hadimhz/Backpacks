@@ -1,0 +1,6 @@
+name: Backpacks
+version: 1.0.0
+main: com.vertmix.backpack.plugin.BackpackPlugin
+api-version: 1.19
+
+depend: [ helper ]
