@@ -58,7 +58,7 @@ public class BackpackMenu extends Gui {
 
         buttonPopulator.accept(ItemStackBuilder.of(Material.PAPER).name("&aSell Contents").build(() -> {
             double price = backpack.sell();
-
+            economy.addBalance(getPlayer(), price);
             getPlayer().sendMessage(Text.colorize("&7[&dBackpack&7] &aSold &6$" + formatter.format(price) + " &aworth of blocks!"));
         }));
 

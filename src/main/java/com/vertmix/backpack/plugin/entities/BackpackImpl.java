@@ -3,8 +3,10 @@ package com.vertmix.backpack.plugin.entities;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.vertmix.backpack.api.Backpack;
+import com.vertmix.backpack.api.EconomyHook;
 import com.vertmix.backpack.plugin.registry.CustomRegistryImpl;
 import me.lucko.helper.Schedulers;
+import me.lucko.helper.Services;
 import me.lucko.helper.gson.JsonBuilder;
 import me.lucko.helper.scheduler.Task;
 import me.lucko.helper.text3.Text;
@@ -53,10 +55,11 @@ public class BackpackImpl extends CustomRegistryImpl<Material, Integer> implemen
         if (autoSell)
             this.task = Schedulers.async().runRepeating(() -> {
                 double price = sell();
-
                 if (price == 0) return;
 
                 OfflinePlayer player = Bukkit.getPlayer(uuid);
+
+                Services.load(EconomyHook.class).addBalance(player, price);
 
                 assert player != null;
                 if (player.isOnline())

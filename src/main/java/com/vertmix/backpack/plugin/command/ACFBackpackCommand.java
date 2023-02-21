@@ -3,7 +3,6 @@ package com.vertmix.backpack.plugin.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
-import com.vertmix.backpack.api.Backpack;
 import com.vertmix.backpack.api.BackpackService;
 import com.vertmix.backpack.api.registry.BackpackRegistry;
 import com.vertmix.backpack.plugin.menu.BackpackMenu;
@@ -34,24 +33,11 @@ public class ACFBackpackCommand extends BaseCommand {
 
     @Subcommand("sell")
     @Description("Sells the content of the backpack.")
-    public void onSell(CommandSender sender, @Optional OfflinePlayer target) {
-
-        OfflinePlayer player;
-
-        if ((target == null || !target.hasPlayedBefore()) && sender instanceof Player)
-            player = ((Player) sender);
-        else if (!(sender instanceof Player)) {
-            sender.sendMessage(Text.colorize("&7[&dBackpack&7] &aCould not find a player with that name!"));
-            return;
-        } else
-            player = target;
-
+    public void onSell(Player player) {
 
         registry.get(player.getUniqueId()).ifPresent(backpack -> {
             double price = backpack.sell();
-
-            if (player.isOnline())
-                player.getPlayer().sendMessage(Text.colorize("&7[&dBackpack&7] &aSold &6$" + formatter.format(price) + " &aworth of blocks!"));
+            player.getPlayer().sendMessage(Text.colorize("&7[&dBackpack&7] &aSold &6$" + formatter.format(price) + " &aworth of blocks!"));
         });
 
     }
@@ -59,21 +45,22 @@ public class ACFBackpackCommand extends BaseCommand {
     @Subcommand("open")
     @Description("Open the backpack upgrade menu.")
     public void onOpen(CommandSender sender, @Optional OfflinePlayer target) {
-        OfflinePlayer player;
 
-        if ((target == null || !target.hasPlayedBefore()) && sender instanceof Player)
-            player = ((Player) sender);
-        else if (!(sender instanceof Player)) {
+        Player player = null;
+
+        if (target != null && target.hasPlayedBefore() && sender.hasPermission("backpacks.open.others") && target.isOnline())
+            player = target.getPlayer();
+        else if (!(sender instanceof Player))
             sender.sendMessage(Text.colorize("&7[&dBackpack&7] &aCould not find a player with that name!"));
-            return;
-        } else
-            player = target;
+        else if (!sender.hasPermission("backpacks.open.others"))
+            sender.sendMessage(Text.colorize("&7[&dBackpack&7] &cYou do not have permissions to do that."));
+        else player = (Player) sender;
 
-        if (!player.isOnline()) {
-            sender.sendMessage(Text.colorize("&7[&dBackpack&7] &aThat player is currently offline!"));
-            return;
-        }
-        new BackpackMenu(player.getPlayer(), registry).open();
+        if (player == null) return;
+
+        new BackpackMenu(player, registry).open();
+
+
     }
 
 }
