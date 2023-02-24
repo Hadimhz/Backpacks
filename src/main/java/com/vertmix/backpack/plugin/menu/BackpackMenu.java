@@ -33,7 +33,7 @@ public class BackpackMenu extends Gui {
     private final EconomyHook economy;
 
     public BackpackMenu(Player player, BackpackRegistry regsRegistry) {
-        super(player, 6, "&6&lUpgrade carrier slave");
+        super(player, 6, "&6&lBackpack Menu");
 
         this.config = Services.load(Config.class);
         this.economy = Services.load(EconomyHook.class);
