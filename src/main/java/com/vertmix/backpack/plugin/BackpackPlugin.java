@@ -9,6 +9,7 @@ import com.vertmix.backpack.api.config.Config;
 import com.vertmix.backpack.api.registry.BackpackRegistry;
 import com.vertmix.backpack.plugin.command.ACFBackpackCommand;
 import com.vertmix.backpack.plugin.listener.PlayerListener;
+import com.vertmix.backpack.plugin.placeholder.PAPIBackpack;
 import com.vertmix.backpack.plugin.registry.BackpackRegistryImpl;
 import com.vertmix.backpack.plugin.service.BackpackServiceImpl;
 import com.vertmix.backpack.plugin.service.EconomyHookImpl;
@@ -17,14 +18,14 @@ import com.vertmix.config.json.JsonConfigRegistry;
 import me.lucko.helper.Services;
 import me.lucko.helper.plugin.ExtendedJavaPlugin;
 import me.lucko.helper.serialize.GsonStorageHandler;
+import org.bukkit.Bukkit;
 
 import java.io.File;
 import java.util.Map;
 import java.util.UUID;
 
 public class BackpackPlugin extends ExtendedJavaPlugin {
-
-    private final GsonStorageHandler<Map<UUID, Backpack>> backpackStorage = new GsonStorageHandler<>("backpacks", ".json", getDataFolder(), new TypeToken<>() {});
+    private final GsonStorageHandler<Map<UUID, Backpack>> backpackStorage = new GsonStorageHandler<>("backpacks", ".json", getDataFolder(), new TypeToken<>() { });
 
     @Override
     public void enable() {
@@ -52,6 +53,14 @@ public class BackpackPlugin extends ExtendedJavaPlugin {
         bindModule(new PlayerListener(backpackRegistry));
 
         backpackStorage.load().ifPresent(data -> data.forEach(backpackRegistry::set));
+
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+
+            getLogger().info("Detected PAPI! Creating placeholders.");
+
+            new PAPIBackpack(backpackRegistry).register();
+        }
 
     }
 

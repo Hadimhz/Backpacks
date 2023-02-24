@@ -83,7 +83,7 @@ public class BackpackMenu extends Gui {
                     .name("&cBackpack Level " + level)
                     .lore(ImmutableList.of(
                             "&7",
-                            "&aPrice: &e$&6" + (config.increasePrice * level),
+                            "&aPrice: " + (level == 1 ? "&e&lFREE" : ("&e$&6" + (config.increasePrice * level))),
                             "&aCapacity: &d" + (config.increaseSize * level),
                             "&7",
                             "&c&l-> PURCHASED"

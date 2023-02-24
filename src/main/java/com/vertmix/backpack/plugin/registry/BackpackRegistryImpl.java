@@ -5,5 +5,5 @@ import com.vertmix.backpack.api.registry.BackpackRegistry;
 
 import java.util.UUID;
 
-public class BackpackRegistryImpl extends CustomRegistryImpl<UUID, Backpack> implements BackpackRegistry {}
+public class BackpackRegistryImpl extends CustomRegistryImpl<UUID, Backpack> implements BackpackRegistry { }
 

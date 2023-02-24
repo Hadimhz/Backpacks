@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface Backpack extends CustomRegistry<Material, Integer>, GsonSerializable {
 
     static @NotNull Backpack deserialize(JsonElement element) {
-        Type gsonType = new TypeToken<Map<Material, Integer>>() {}.getType();
+        Type gsonType = new TypeToken<Map<Material, Integer>>() { }.getType();
 
         Gson gson = new Gson();
 
@@ -59,6 +59,10 @@ public interface Backpack extends CustomRegistry<Material, Integer>, GsonSeriali
 
     default double sell() {
         return Services.load(BackpackService.class).sell(this);
+    }
+
+    default int getCapacity() {
+        return Services.load(BackpackService.class).getSpace(getLevel());
     }
 
 }

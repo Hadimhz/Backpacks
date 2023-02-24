@@ -4,4 +4,4 @@ import com.vertmix.backpack.api.Backpack;
 
 import java.util.UUID;
 
-public interface BackpackRegistry extends CustomRegistry<UUID, Backpack> {}
+public interface BackpackRegistry extends CustomRegistry<UUID, Backpack> { }
